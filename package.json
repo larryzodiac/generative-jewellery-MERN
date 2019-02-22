@@ -1,0 +1,24 @@
+{
+  "name": "generative-jewellery-mern",
+  "version": "1.0.0",
+  "description": "MERN stack for research project React application",
+  "main": "server.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/larryzodiac/generative-jewellery-MERN.git"
+  },
+  "author": "Evan MacHale",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/larryzodiac/generative-jewellery-MERN/issues"
+  },
+  "homepage": "https://github.com/larryzodiac/generative-jewellery-MERN#readme",
+  "dependencies": {
+    "express": "^4.16.4",
+    "mongodb": "^3.1.13",
+    "nodemon": "^1.18.10"
+  }
+}
