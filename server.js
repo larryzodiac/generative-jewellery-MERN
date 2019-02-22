@@ -57,18 +57,27 @@ app.listen(port, () => console.log(`Example app listening on port ${port}!`));
 // ------------------------------------------------- //
 
 /*
+  22.02.19 (Same day)
+  Created new cluster on MongoDB Atlas + collection/document
+  MongoDB Compass can connect to Atlas using URI connection string
+  // mongodb+srv://larryzodiac:1234@fourth-year-tawax.mongodb.net/admin
+*/
+
+// ------------------------------------------------- //
+
+/*
   For viewing in the browser -> basis of how to integrate React
   Open @ http://localhost:3000/api/geometries
 */
 
 app.get('/api/geometries', (req, res) => {
-  MongoClient.connect('mongodb://localhost:27017/localhost-database', { useNewUrlParser: true }, function (err, client) {
+  MongoClient.connect('mongodb+srv://larryzodiac:1234@fourth-year-tawax.mongodb.net/admin', { useNewUrlParser: true }, function (err, client) {
     if (err) throw err
 
-    var db = client.db('localhost-database'); // collection
+    var db = client.db('generative-jewellery'); // collection
 
     // Document
-    db.collection('test').find().toArray(function (err, result) {
+    db.collection('users').find().toArray(function (err, result) {
       if (err) throw err
       res.send(result);
     });
