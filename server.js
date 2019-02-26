@@ -6,12 +6,19 @@
 // https://expressjs.com/en/guide/database-integration.html#mongodb
 // https://docs.mongodb.com/manual/tutorial/install-mongodb-on-windows/
 // https://docs.mongodb.com/manual/tutorial/install-mongodb-on-windows/#create-database-directory
+// https://expressjs.com/en/guide/routing.html
 // ------------------------------------------------- //
 
 const express = require('express');
 const MongoClient = require('mongodb').MongoClient;
 const app = express();
 const port = 3000;
+
+const url = 'mongodb+srv://larryzodiac:1234@fourth-year-tawax.mongodb.net/admin';
+const localhost = 'mongodb://localhost:27017/localhost-database';
+
+app.get('/', (req, res) => res.send('Hello World!')); // localhost:3000
+app.listen(port, () => console.log(`Example app listening on port ${port}!`));
 
 // ------------------------------------------------- //
 
@@ -30,32 +37,6 @@ const port = 3000;
     nodemon server.js
 */
 
-// ------------------------------------------------- //
-
-app.get('/', (req, res) => res.send('Hello World!')); // localhost:3000
-app.get('/api/users', (req, res) => res.send({id:1, name:'John', age:40})); // localhost:3000/api/users
-app.listen(port, () => console.log(`Example app listening on port ${port}!`));
-
-// ------------------------------------------------- //
-
-/*
-  Testing with node.js
-*/
-
-// MongoClient.connect('mongodb://localhost:27017/localhost-database', { useNewUrlParser: true }, function (err, client) {
-//   if (err) throw err
-//
-//   const db = client.db('localhost-database');
-//
-//   db.collection('test').find().toArray(function (err, result) {
-//     if (err) throw err
-//     console.log('');
-//     console.log(result);
-//   });
-// });
-
-// ------------------------------------------------- //
-
 /*
   22.02.19 (Same day)
   Created new cluster on MongoDB Atlas + collection/document
@@ -63,23 +44,65 @@ app.listen(port, () => console.log(`Example app listening on port ${port}!`));
   // mongodb+srv://larryzodiac:1234@fourth-year-tawax.mongodb.net/admin
 */
 
+/*
+  db.collection.insertOne({name:'joe'});
+  db.collection.find();
+  // find the record that matches 'joe' + set the record age to 7
+  db.collection.updateOne({name:'joe'}, {$set: {age:7}});
+  db.collection.deleteOne({name:'joe'});
+*/
+
 // ------------------------------------------------- //
 
 /*
-  For viewing in the browser -> basis of how to integrate React
-  Open @ http://localhost:3000/api/geometries
+  Create
 */
+app.post('/api/users/create', (req, res) => {
+  // MongoClient.connect(url, { useNewUrlParser: true }, (err, client) => {
+  //   if (err) throw err
+  //   const db = client.db('generative-jewellery');
+  //   db.collection('users').find().toArray((err, result) => {
+  //     if (err) throw err
+  //     res.send(result);
+  //   });
+  // })
+});
 
-app.get('/api/geometries', (req, res) => {
-  MongoClient.connect('mongodb+srv://larryzodiac:1234@fourth-year-tawax.mongodb.net/admin', { useNewUrlParser: true }, function (err, client) {
+// ------------------------------------------------- //
+
+/*
+  Read
+*/
+app.get('/api/users/', (req, res) => {
+  MongoClient.connect(url, { useNewUrlParser: true }, (err, client) => {
     if (err) throw err
-
-    var db = client.db('generative-jewellery'); // collection
-
-    // Document
-    db.collection('users').find().toArray(function (err, result) {
+    const db = client.db('generative-jewellery');
+    db.collection('users').find().toArray((err, result) => {
       if (err) throw err
       res.send(result);
     });
   })
 });
+
+// Route parametres example
+app.get('/api/users/:userId/', function (req, res) {
+  res.send(req.params);
+})
+
+// ------------------------------------------------- //
+
+/*
+  Update
+*/
+app.put('/api/users/update', function (req, res) {
+  res.send('Got a PUT request at /user');
+})
+
+// ------------------------------------------------- //
+
+/*
+  Delete
+*/
+app.delete('/api/users/update', function (req, res) {
+  res.send('Got a DELETE request at /user');
+})
