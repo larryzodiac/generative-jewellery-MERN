@@ -1,25 +1,12 @@
 // ------------------------------------------------- //
 // Evan MacHale - N00150552
-// 22.02.19
-// Express + MongoDB
+// 02.03.19
+// # Backend Servers w/ Node, Express & MongoDB
 // ------------------------------------------------- //
 // https://expressjs.com/en/guide/database-integration.html#mongodb
 // https://docs.mongodb.com/manual/tutorial/install-mongodb-on-windows/
 // https://docs.mongodb.com/manual/tutorial/install-mongodb-on-windows/#create-database-directory
 // https://expressjs.com/en/guide/routing.html
-// ------------------------------------------------- //
-
-const express = require('express');
-const MongoClient = require('mongodb').MongoClient;
-const app = express();
-const port = 3000;
-
-const url = 'mongodb+srv://larryzodiac:1234@fourth-year-tawax.mongodb.net/admin';
-const localhost = 'mongodb://localhost:27017/localhost-database';
-
-app.get('/', (req, res) => res.send('Hello World!')); // localhost:3000
-app.listen(port, () => console.log(`Example app listening on port ${port}!`));
-
 // ------------------------------------------------- //
 
 /*
@@ -52,20 +39,46 @@ app.listen(port, () => console.log(`Example app listening on port ${port}!`));
   db.collection.deleteOne({name:'joe'});
 */
 
+/*
+  Note:
+  When switching between servers make sure to change package.json
+*/
+
+// ------------------------------------------------- //
+
+const { MongoClient } = require('mongodb');
+// const { ObjectID } = require('mongodb');
+const bodyParser = require('body-parser');
+const express = require('express');
+
+const server = express();
+server.use(express.static('dist'));
+
+const dbRoute = 'mongodb+srv://larryzodiac:1234@fourth-year-tawax.mongodb.net/admin'; // Atlas
+// const dbRoute = 'mongodb://localhost:27017/localhost-database'; // localhost
+const dbName = 'generative-jewellery';
+let db;
+
+// ------------------------------------------------- //
+
+MongoClient.connect(dbRoute, (err, client) => {
+  if (err) throw err;
+  db = client.db(dbName);
+  server.listen(process.env.PORT || 8080, () => console.log(`Listening on port ${process.env.PORT || 8080}!`));
+});
+
+// ------------------------------------------------- //
+
+server.use(bodyParser.urlencoded({ extended: false }));
+server.use(bodyParser.json());
+
 // ------------------------------------------------- //
 
 /*
   Create
 */
-app.post('/api/users/create', (req, res) => {
-  // MongoClient.connect(url, { useNewUrlParser: true }, (err, client) => {
-  //   if (err) throw err
-  //   const db = client.db('generative-jewellery');
-  //   db.collection('users').find().toArray((err, result) => {
-  //     if (err) throw err
-  //     res.send(result);
-  //   });
-  // })
+server.post('/api/users/create', (req, res) => {
+  res.send('Got a POST request at /user');
 });
 
 // ------------------------------------------------- //
@@ -73,36 +86,35 @@ app.post('/api/users/create', (req, res) => {
 /*
   Read
 */
-app.get('/api/users/', (req, res) => {
-  MongoClient.connect(url, { useNewUrlParser: true }, (err, client) => {
-    if (err) throw err
-    const db = client.db('generative-jewellery');
-    db.collection('users').find().toArray((err, result) => {
-      if (err) throw err
-      res.send(result);
-    });
-  })
+server.get('/api/users', (req, res) => {
+  db.collection('users').find().toArray((err, result) => {
+    if (err) throw err;
+    console.log(result);
+    res.send(result);
+  });
 });
 
 // Route parametres example
-app.get('/api/users/:userId/', function (req, res) {
+server.get('/api/users/:userId/', (req, res) => {
   res.send(req.params);
-})
+});
 
 // ------------------------------------------------- //
 
 /*
   Update
 */
-app.put('/api/users/update', function (req, res) {
+server.put('/api/users/update', (req, res) => {
   res.send('Got a PUT request at /user');
-})
+});
 
 // ------------------------------------------------- //
 
 /*
   Delete
 */
-app.delete('/api/users/update', function (req, res) {
+server.delete('/api/users/update', (req, res) => {
   res.send('Got a DELETE request at /user');
-})
+});
+
+// ------------------------------------------------- //
