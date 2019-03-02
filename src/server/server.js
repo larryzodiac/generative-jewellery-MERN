@@ -1,7 +1,7 @@
 // ------------------------------------------------- //
 // Evan MacHale - N00150552
 // 02.03.19
-// # Backend Servers w/ Node, Express & MongoDB
+// Backend Servers w/ Node, Express & MongoDB
 // ------------------------------------------------- //
 // https://expressjs.com/en/guide/database-integration.html#mongodb
 // https://docs.mongodb.com/manual/tutorial/install-mongodb-on-windows/
@@ -47,7 +47,7 @@
 // ------------------------------------------------- //
 
 const { MongoClient } = require('mongodb');
-// const { ObjectID } = require('mongodb');
+const { ObjectId } = require('mongodb');
 const bodyParser = require('body-parser');
 const express = require('express');
 
@@ -84,7 +84,7 @@ server.post('/api/users/create', (req, res) => {
 // ------------------------------------------------- //
 
 /*
-  Read
+  Read all users
 */
 server.get('/api/users', (req, res) => {
   db.collection('users').find().toArray((err, result) => {
@@ -94,9 +94,39 @@ server.get('/api/users', (req, res) => {
   });
 });
 
+/*
+  Read a single users' saved geometry weights
+*/
 // Route parametres example
-server.get('/api/users/:userId/', (req, res) => {
-  res.send(req.params);
+server.get('/api/users/:username', (req, res) => {
+  db.collection('users').find({ username: req.params.username }).toArray((err, result) => {
+    if (err) throw err;
+    console.log(result[0].weights);
+    res.send(result[0].weights);
+  });
+});
+
+/*
+  Read a single users' specific geometry weight
+*/
+server.get('/api/users/:username/weights/:name)', (req, res) => {
+  // db.collection('users').find({ 'weights.weight_id': req.params.weight_id }).toArray((err, result) => {
+  db.collection('users').find({ 'weights.name': ObjectId(req.params.name) }).toArray((err, result) => {
+    if (err) throw err;
+    console.log(req.params.name);
+    // console.log(result);
+    console.log('');
+    // const filtered = result.find(r => r.weights.some(w => w.weight_id === req.params.weight_id));
+    // const filtered = result.find(r => r.weights.find(w => console.log(w.weight_id)));
+    // const filtered2 = result.find(r => r.weights.some(w => w.weight_id === ObjectId(req.params.weight_id));
+
+
+    // const filtered = result.find(r => r.weights.some(w => w.name === req.params.name));
+    // console.log(filtered);
+
+
+    res.send(result);
+  });
 });
 
 // ------------------------------------------------- //
