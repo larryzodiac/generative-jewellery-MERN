@@ -109,25 +109,25 @@ server.get('/api/users/:username', (req, res) => {
 /*
   Read a single users' specific geometry weight
 */
-server.get('/api/users/:username/weights/:name)', (req, res) => {
-  // db.collection('users').find({ 'weights.weight_id': req.params.weight_id }).toArray((err, result) => {
-  db.collection('users').find({ 'weights.name': ObjectId(req.params.name) }).toArray((err, result) => {
-    if (err) throw err;
-    console.log(req.params.name);
-    // console.log(result);
-    console.log('');
-    // const filtered = result.find(r => r.weights.some(w => w.weight_id === req.params.weight_id));
-    // const filtered = result.find(r => r.weights.find(w => console.log(w.weight_id)));
-    // const filtered2 = result.find(r => r.weights.some(w => w.weight_id === ObjectId(req.params.weight_id));
-
-
-    // const filtered = result.find(r => r.weights.some(w => w.name === req.params.name));
-    // console.log(filtered);
-
-
-    res.send(result);
-  });
-});
+// server.get('/api/users/:username/weights/:name)', (req, res) => {
+//   // db.collection('users').find({ 'weights.weight_id': req.params.weight_id }).toArray((err, result) => {
+//   db.collection('users').find({ 'weights.name': ObjectId(req.params.name) }).toArray((err, result) => {
+//     if (err) throw err;
+//     console.log(req.params.name);
+//     // console.log(result);
+//     console.log('');
+//     // const filtered = result.find(r => r.weights.some(w => w.weight_id === req.params.weight_id));
+//     // const filtered = result.find(r => r.weights.find(w => console.log(w.weight_id)));
+//     // const filtered2 = result.find(r => r.weights.some(w => w.weight_id === ObjectId(req.params.weight_id));
+//
+//
+//     // const filtered = result.find(r => r.weights.some(w => w.name === req.params.name));
+//     // console.log(filtered);
+//
+//
+//     res.send(result);
+//   });
+// });
 
 // ------------------------------------------------- //
 
