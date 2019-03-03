@@ -61,7 +61,7 @@ let db;
 
 // ------------------------------------------------- //
 
-MongoClient.connect(dbRoute, (err, client) => {
+MongoClient.connect(dbRoute, { useNewUrlParser: true }, (err, client) => {
   if (err) throw err;
   db = client.db(dbName);
   server.listen(process.env.PORT || 8080, () => console.log(`Listening on port ${process.env.PORT || 8080}!`));
