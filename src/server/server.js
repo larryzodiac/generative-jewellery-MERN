@@ -47,7 +47,7 @@
 // ------------------------------------------------- //
 
 const { MongoClient } = require('mongodb');
-const { ObjectId } = require('mongodb');
+// const { ObjectId } = require('mongodb');
 const bodyParser = require('body-parser');
 const express = require('express');
 
@@ -78,7 +78,7 @@ server.use(bodyParser.json());
   Create
 */
 server.post('/api/users/create', (req, res) => {
-  res.send('Got a POST request at /user');
+  res.send(req);
 });
 
 // ------------------------------------------------- //

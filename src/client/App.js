@@ -5,7 +5,7 @@
   + + + + + + + + + + +
   + World Map 🌀 (Pages)
   + Index
-  +   ¬ App
+  +   ¬ App             <--- You are here 🚀
   +     ¬ Portal
   +       ¬ Login
   +       ¬ Signup
@@ -30,15 +30,22 @@ class App extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      isLoggedin: false
+      loginSuccess: false
     };
+    this.setLoginSuccess = this.setLoginSuccess.bind(this);
+  }
+
+  setLoginSuccess() {
+    this.setState(prevState => ({
+      loginSuccess: !prevState.loginSuccess
+    }));
   }
 
   render() {
-    const { isLoggedin } = this.state;
+    const { loginSuccess } = this.state;
     return (
       <HashRouter>
-        {!isLoggedin ? <Portal /> : <World />}
+        {!loginSuccess ? <Portal setLoginSuccess={this.setLoginSuccess} /> : <World />}
       </HashRouter>
     );
   }

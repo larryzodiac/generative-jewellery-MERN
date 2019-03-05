@@ -16,7 +16,7 @@
 
 import React, { Component } from 'react';
 // Material Design Components
-import { Grid } from '@material/react-layout-grid';
+import { Grid, Row, Cell } from '@material/react-layout-grid';
 // My Components
 import Signin from './Signin';
 import Signup from './Signup';
@@ -29,24 +29,41 @@ class Portal extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      signup: true
+      whichPortal: true
     };
     this.switchPortal = this.switchPortal.bind(this);
+    // this.newUser = this.newUser.bind(this);
+    // this.existingUser = this.existingUser.bind(this);
   }
 
   // Toggle between forms
   switchPortal() {
     this.setState(prevState => ({
-      signup: !prevState.signup
+      whichPortal: !prevState.whichPortal
     }));
   }
 
+  // newUser() {
+  //   console.log(`Let's create a new user...`);
+  //   // Then we'll call setLoginSuccess from App
+  // }
+  //
+  // existingUser(event) {
+  //   console.log(`Let's check if this user exists...`);
+  //   console.log(event.target.value);
+  //   event.preventDefault();
+  // }
+
   render() {
-    const { signup } = this.state;
+    const { whichPortal } = this.state;
     return (
       <Grid>
-        <p>Hello landing page!</p>
-        { signup ? <Signup switchPortal={this.switchPortal} /> : <Signin switchPortal={this.switchPortal} /> }
+        <Row>
+          <Cell columns={12}>
+            <span role="img" aria-label="Portal">Hello Portal Page! 🌀</span>
+          </Cell>
+        </Row>
+        { whichPortal ? <Signup switchPortal={this.switchPortal} /> : <Signin switchPortal={this.switchPortal} /> }
       </Grid>
     );
   }

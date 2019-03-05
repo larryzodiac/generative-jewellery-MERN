@@ -6,8 +6,10 @@
 
 import React, { Component } from 'react';
 // Material Design Components
-import TopAppBar, {TopAppBarFixedAdjust} from '@material/react-top-app-bar';
-import Drawer, {DrawerAppContent, DrawerContent, DrawerHeader, DrawerTitle} from '@material/react-drawer';
+import TopAppBar, { TopAppBarFixedAdjust } from '@material/react-top-app-bar';
+import Drawer, {
+  DrawerAppContent, DrawerContent, DrawerHeader, DrawerTitle
+} from '@material/react-drawer';
 import List, { ListGroup, ListDivider } from '@material/react-list';
 import Button from '@material/react-button';
 import { ListItem } from '@material/react-list';
@@ -55,7 +57,7 @@ class App extends Component {
       This does not appply to the other targets as they are <input>
       See https://material-ui.com/lab/slider/
     */
-    const id = event.target.id;
+    const { id } = event.target;
     const name = event.target.type === 'checkbox' ? 'wireframe' : event.target.name;
     const value = event.target.type === 'checkbox' ? event.target.checked : event.target.value;
     this.setState({
@@ -78,27 +80,27 @@ class App extends Component {
 
   render() {
     return (
-      <div className='drawer-container'>
+      <div className="drawer-container">
         <Drawer
-          className='drawer-alternate'
-          dismissible={true}
+          className="drawer-alternate"
+          dismissible
           open={this.state.drawerOpen}
         >
-          <DrawerHeader className='drawer-title'>
-            <DrawerTitle tag='h2'>Menu</DrawerTitle>
+          <DrawerHeader className="drawer-title">
+            <DrawerTitle tag="h2">Menu</DrawerTitle>
           </DrawerHeader>
 
           <DrawerContent>
             <ListGroup>
-              <List nonInteractive={true}>
+              <List nonInteractive>
                 <GeometryList
                   geometry={this.state.geometry}
                   wireframe={this.state.wireframe}
                   onChange={this.handleChange}
                 />
               </List>
-              <ListDivider className='drawer-divider'/>
-              <List nonInteractive={true}>
+              <ListDivider className="drawer-divider" />
+              <List nonInteractive>
                 <FunctionList
                   subdivisions={this.state.subdivisions}
                   adjacent_weight={this.state.adjacent_weight}
@@ -107,11 +109,11 @@ class App extends Component {
                   onChange={this.handleChange}
                 />
               </List>
-              <ListDivider className='drawer-divider'/>
-              <List nonInteractive={true}>
-                <ListItem className='drawer-list-item'>
+              <ListDivider className="drawer-divider" />
+              <List nonInteractive>
+                <ListItem className="drawer-list-item">
                   <Button
-                    className='button-alternate-clear'
+                    className="button-alternate-clear"
                     outlined
                     onClick={this.handleClick}
                   >
@@ -123,14 +125,16 @@ class App extends Component {
           </DrawerContent>
         </Drawer>
 
-        <DrawerAppContent className='drawer-app-content'>
+        <DrawerAppContent className="drawer-app-content">
           <TopAppBar
-            title='Generative Jewellery'
-            className = 'top-app-bar-alternate'
-            navigationIcon={<MaterialIcon
-              icon='menu'
-              onClick={this.toggleDrawer}
-            />}
+            title="Generative Jewellery"
+            className="top-app-bar-alternate"
+            navigationIcon={(
+              <MaterialIcon
+                icon="menu"
+                onClick={this.toggleDrawer}
+              />
+)}
           />
 
           <TopAppBarFixedAdjust>
