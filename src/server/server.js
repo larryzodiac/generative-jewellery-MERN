@@ -78,7 +78,11 @@ server.use(bodyParser.json());
   Create
 */
 server.post('/api/users/create', (req, res) => {
-  res.send(req);
+  const document = req.body;
+  db.collection('users').insertOne(document, (err, result) => {
+    if (err) throw err;
+    res.send(result);
+  });
 });
 
 // ------------------------------------------------- //
@@ -89,21 +93,22 @@ server.post('/api/users/create', (req, res) => {
 server.get('/api/users', (req, res) => {
   db.collection('users').find().toArray((err, result) => {
     if (err) throw err;
-    console.log(result);
     res.send(result);
   });
 });
 
 /*
-  Read a single users' saved geometry weights
+  Read a single users
 */
 // Route parametres example
-server.get('/api/users/:username', (req, res) => {
-  db.collection('users').find({ username: req.params.username }).toArray((err, result) => {
-    if (err) throw err;
-    console.log(result[0].weights);
-    res.send(result[0].weights);
-  });
+server.get('/api/users/:email', (req, res) => {
+  console.log('params');
+  // console.log(req.params.email);
+  // db.collection('users').find({ username: req.params.username }).toArray((err, result) => {
+  //   if (err) throw err;
+  //   console.log(result[0].weights);
+  //   res.send(result[0].weights);
+  // });
 });
 
 /*

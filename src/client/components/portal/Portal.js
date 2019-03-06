@@ -15,6 +15,7 @@
 */
 
 import React, { Component } from 'react';
+import PropTypes from 'prop-types';
 // Material Design Components
 import { Grid, Row, Cell } from '@material/react-layout-grid';
 // My Components
@@ -43,19 +44,9 @@ class Portal extends Component {
     }));
   }
 
-  // newUser() {
-  //   console.log(`Let's create a new user...`);
-  //   // Then we'll call setLoginSuccess from App
-  // }
-  //
-  // existingUser(event) {
-  //   console.log(`Let's check if this user exists...`);
-  //   console.log(event.target.value);
-  //   event.preventDefault();
-  // }
-
   render() {
     const { whichPortal } = this.state;
+    const { setLoginSuccess } = this.props;
     return (
       <Grid>
         <Row>
@@ -63,10 +54,19 @@ class Portal extends Component {
             <span role="img" aria-label="Portal">Hello Portal Page! 🌀</span>
           </Cell>
         </Row>
-        { whichPortal ? <Signup switchPortal={this.switchPortal} /> : <Signin switchPortal={this.switchPortal} /> }
+        { whichPortal ? <Signup switchPortal={this.switchPortal} setLoginSuccess={setLoginSuccess} /> : <Signin switchPortal={this.switchPortal} setLoginSuccess={setLoginSuccess} /> }
       </Grid>
     );
   }
 }
+
+Portal.propTypes = {
+  setLoginSuccess: PropTypes.func
+};
+
+// Specifies the default values for props:
+Portal.defaultProps = {
+  setLoginSuccess: null
+};
 
 export default Portal;

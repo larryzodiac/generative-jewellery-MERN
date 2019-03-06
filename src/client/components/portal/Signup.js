@@ -55,21 +55,31 @@ class Signup extends Component {
     const { email } = this.state;
     const { password } = this.state;
     const { confirm } = this.state;
-    // Validate Password
+    const weights = [];
+    const { setLoginSuccess } = this.props;
+    event.preventDefault();
+    /*
+      Validate Password 🔒
+    */
     let passwordValid;
     if (password === confirm && password !== '' && confirm !== '') {
       passwordValid = true;
     } else {
       passwordValid = false;
     }
-    console.log(passwordValid);
-    event.preventDefault();
+    /*
+      Make POST Request 📮
+    */
     if (passwordValid) {
       axios.post('api/users/create', {
-        username: 'Axios sent a POST'
+        username,
+        email,
+        password,
+        weights
       })
         .then((response) => {
-          console.log(response);
+          console.log(`status: ${response.status}`);
+          if (response.status === 200) setLoginSuccess();
         })
         .catch(error => console.log(error));
     }
@@ -119,12 +129,14 @@ class Signup extends Component {
 }
 
 Signup.propTypes = {
-  switchPortal: PropTypes.func
+  switchPortal: PropTypes.func,
+  setLoginSuccess: PropTypes.func
 };
 
 // Specifies the default values for props:
 Signup.defaultProps = {
-  switchPortal: null
+  switchPortal: null,
+  setLoginSuccess: null
 };
 
 export default Signup;

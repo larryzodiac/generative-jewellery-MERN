@@ -16,7 +16,7 @@
 
 import React, { Component } from 'react';
 // React-Router-Dom
-import { HashRouter } from 'react-router-dom';
+import { BrowserRouter } from 'react-router-dom';
 // My Components
 import Portal from './components/portal/Portal';
 import World from './components/World';
@@ -44,9 +44,9 @@ class App extends Component {
   render() {
     const { loginSuccess } = this.state;
     return (
-      <HashRouter>
+      <BrowserRouter>
         {!loginSuccess ? <Portal setLoginSuccess={this.setLoginSuccess} /> : <World />}
-      </HashRouter>
+      </BrowserRouter>
     );
   }
 }

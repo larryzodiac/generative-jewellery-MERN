@@ -16,6 +16,7 @@
 
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
+import axios from 'axios';
 // Material Design Components
 import { Row, Cell } from '@material/react-layout-grid';
 import Button from '@material/react-button';
@@ -48,8 +49,19 @@ class Signin extends Component {
   }
 
   handleSubmit(event) {
-    console.log(`A form was submitted: ${this.state}`);
+    const { email } = this.state;
+    const { password } = this.state;
+    const { setLoginSuccess } = this.props;
     event.preventDefault();
+    /*
+      Make GET Request 📮
+    */
+    axios.get(`api/users?${email}`)
+      .then((response) => {
+        // console.log(`status: ${response.status}`);
+        // if (response.status === 200) setLoginSuccess();
+      })
+      .catch(error => console.log(error));
   }
 
   render() {
