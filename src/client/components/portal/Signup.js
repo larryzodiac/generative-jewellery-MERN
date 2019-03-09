@@ -71,17 +71,20 @@ class Signup extends Component {
       Make POST Request 📮
     */
     if (passwordValid) {
-      axios.post('api/users/create', {
+      axios.post('api/users', {
+        _id: '',
         username,
         email,
         password,
         weights
       })
         .then((response) => {
-          console.log(`status: ${response.status}`);
-          if (response.status === 200) setLoginSuccess();
+          console.log(response);
+          if (response.status === 200) setLoginSuccess(response.data._id);
         })
         .catch(error => console.log(error));
+    } else {
+      console.log('incorrect data');
     }
   }
 

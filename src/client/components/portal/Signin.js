@@ -56,10 +56,14 @@ class Signin extends Component {
     /*
       Make GET Request 📮
     */
-    axios.get(`api/users?${email}`)
+    axios.post('api/users/signin', { email, password })
       .then((response) => {
-        // console.log(`status: ${response.status}`);
-        // if (response.status === 200) setLoginSuccess();
+        // if (response.data.email === email && response.data.password === password) {
+        //   setLoginSuccess(response.data._id);
+        // } else {
+        //   console.log('incorrect data');
+        // }
+        console.log(response);
       })
       .catch(error => console.log(error));
   }
@@ -100,12 +104,14 @@ class Signin extends Component {
 }
 
 Signin.propTypes = {
-  switchPortal: PropTypes.func
+  switchPortal: PropTypes.func,
+  setLoginSuccess: PropTypes.func
 };
 
 // Specifies the default values for props:
 Signin.defaultProps = {
-  switchPortal: null
+  switchPortal: null,
+  setLoginSuccess: null
 };
 
 export default Signin;

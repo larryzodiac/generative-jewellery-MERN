@@ -9,6 +9,7 @@
     "no-console": "off",
     "comma-dangle": "off",
     "react/jsx-filename-extension": "off",
-    "max-len": "off"
+    "max-len": "off",
+    "no-underscore-dangle": "off"
   }
 }

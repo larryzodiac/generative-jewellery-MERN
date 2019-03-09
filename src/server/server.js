@@ -47,9 +47,10 @@
 // ------------------------------------------------- //
 
 const { MongoClient } = require('mongodb');
-// const { ObjectId } = require('mongodb');
+const { ObjectID } = require('mongodb');
 const bodyParser = require('body-parser');
 const express = require('express');
+const session = require('express-session')
 
 const server = express();
 server.use(express.static('dist'));
@@ -71,65 +72,52 @@ MongoClient.connect(dbRoute, { useNewUrlParser: true }, (err, client) => {
 
 server.use(bodyParser.urlencoded({ extended: false }));
 server.use(bodyParser.json());
+server.use(session({
+  saveUninitialized: false,
+  secret: 'keyboard cat',
+  cookie: {
+    maxAge: 3600
+  }
+}));
 
 // ------------------------------------------------- //
 
 /*
-  Create
+  Signup.js ~ Create
 */
-server.post('/api/users/create', (req, res) => {
+server.post('/api/users', (req, res) => {
+  req.body._id = new ObjectID();
   const document = req.body;
   db.collection('users').insertOne(document, (err, result) => {
     if (err) throw err;
-    res.send(result);
+    // req.session.id = document._id;
+    // res.send(req.session.id);
+  });
+});
+
+/*
+  Signin.js ~ Read a user's email + password (check login match)
+*/
+// Route parametres example
+server.post('/api/users/signin', (req, res) => {
+  db.collection('users').findOne({ email: req.body.email }, (err, result) => {
+    if (err) throw err;
+    console.log(result);
+    if (result.email === req.body.email && result.password === req.body.password) {
+      req.session.id = result._id;
+      res.send(result);
+    }
   });
 });
 
 // ------------------------------------------------- //
 
 /*
-  Read all users
+  World.js ~ Read a user's id (double check token match)
 */
-server.get('/api/users', (req, res) => {
-  db.collection('users').find().toArray((err, result) => {
-    if (err) throw err;
-    res.send(result);
-  });
-});
-
-/*
-  Read a single users
-*/
-// Route parametres example
-server.get('/api/users/:email', (req, res) => {
-  console.log('params');
-  // console.log(req.params.email);
-  // db.collection('users').find({ username: req.params.username }).toArray((err, result) => {
-  //   if (err) throw err;
-  //   console.log(result[0].weights);
-  //   res.send(result[0].weights);
-  // });
-});
-
-/*
-  Read a single users' specific geometry weight
-*/
-// server.get('/api/users/:username/weights/:name)', (req, res) => {
-//   // db.collection('users').find({ 'weights.weight_id': req.params.weight_id }).toArray((err, result) => {
-//   db.collection('users').find({ 'weights.name': ObjectId(req.params.name) }).toArray((err, result) => {
+// server.get('/api/users/:id', (req, res) => {
+//   db.collection('users').findOne({ _id: new ObjectID(req.params.id) }, (err, result) => {
 //     if (err) throw err;
-//     console.log(req.params.name);
-//     // console.log(result);
-//     console.log('');
-//     // const filtered = result.find(r => r.weights.some(w => w.weight_id === req.params.weight_id));
-//     // const filtered = result.find(r => r.weights.find(w => console.log(w.weight_id)));
-//     // const filtered2 = result.find(r => r.weights.some(w => w.weight_id === ObjectId(req.params.weight_id));
-//
-//
-//     // const filtered = result.find(r => r.weights.some(w => w.name === req.params.name));
-//     // console.log(filtered);
-//
-//
 //     res.send(result);
 //   });
 // });

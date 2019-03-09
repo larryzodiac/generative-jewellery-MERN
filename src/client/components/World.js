@@ -20,7 +20,7 @@ import React, { Component } from 'react';
 // My Components
 
 /*
-  World functions as 
+  World functions as
 */
 
 class World extends Component {
@@ -33,6 +33,7 @@ class World extends Component {
     return (
       <React.Fragment>
         <h2>Welcome to World</h2>
+        <h2>{this.props.id}</h2>
       </React.Fragment>
     );
   }

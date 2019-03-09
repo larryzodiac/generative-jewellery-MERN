@@ -30,22 +30,25 @@ class App extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      loginSuccess: false
+      loginSuccess: false,
+      id: ''
     };
     this.setLoginSuccess = this.setLoginSuccess.bind(this);
   }
 
-  setLoginSuccess() {
+  setLoginSuccess(token) {
     this.setState(prevState => ({
-      loginSuccess: !prevState.loginSuccess
+      loginSuccess: !prevState.loginSuccess,
+      id: token
     }));
   }
 
   render() {
     const { loginSuccess } = this.state;
+    const { id } = this.state;
     return (
       <BrowserRouter>
-        {!loginSuccess ? <Portal setLoginSuccess={this.setLoginSuccess} /> : <World />}
+        {!loginSuccess ? <Portal setLoginSuccess={this.setLoginSuccess} /> : <World id={id} />}
       </BrowserRouter>
     );
   }

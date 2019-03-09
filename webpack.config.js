@@ -22,9 +22,10 @@ module.exports = {
               name: 'bundle.css',
             },
           },
-          {loader: 'extract-loader'},
-          {loader: 'css-loader'},
-          {loader: 'postcss-loader',
+          { loader: 'extract-loader' },
+          { loader: 'css-loader' },
+          {
+            loader: 'postcss-loader',
             options: {
               plugins: () => [autoprefixer()],
             },
