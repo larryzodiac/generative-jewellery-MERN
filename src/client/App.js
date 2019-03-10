@@ -16,7 +16,7 @@
 
 import React, { Component } from 'react';
 // React-Router-Dom
-import { BrowserRouter } from 'react-router-dom';
+import { BrowserRouter, Route, Redirect } from 'react-router-dom';
 // My Components
 import Portal from './components/portal/Portal';
 import World from './components/World';
@@ -41,6 +41,8 @@ class App extends Component {
       loginSuccess: !prevState.loginSuccess,
       id: token
     }));
+    console.log(token);
+    console.log(this.state.loginSuccess);
   }
 
   render() {
@@ -48,7 +50,20 @@ class App extends Component {
     const { id } = this.state;
     return (
       <BrowserRouter>
-        {!loginSuccess ? <Portal setLoginSuccess={this.setLoginSuccess} /> : <World id={id} />}
+        <div>
+          <Route path="/portal" render={props => <Portal {...props} setLoginSuccess={this.setLoginSuccess} />} />
+          <Route
+            exact
+            path="/"
+            render={() => (
+              !loginSuccess ? (
+                <Redirect to="/portal" />
+              ) : (
+                <World loginSuccess={loginSuccess} setLoginSuccess={this.setLoginSuccess} id={id} />
+              )
+            )}
+          />
+        </div>
       </BrowserRouter>
     );
   }

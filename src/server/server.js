@@ -90,8 +90,8 @@ server.post('/api/users', (req, res) => {
   const document = req.body;
   db.collection('users').insertOne(document, (err, result) => {
     if (err) throw err;
-    // req.session.id = document._id;
-    // res.send(req.session.id);
+    req.session.id = document._id;
+    res.send(document._id);
   });
 });
 
@@ -102,7 +102,6 @@ server.post('/api/users', (req, res) => {
 server.post('/api/users/signin', (req, res) => {
   db.collection('users').findOne({ email: req.body.email }, (err, result) => {
     if (err) throw err;
-    console.log(result);
     if (result.email === req.body.email && result.password === req.body.password) {
       req.session.id = result._id;
       res.send(result);

@@ -51,13 +51,19 @@ class Signup extends Component {
   }
 
   handleSubmit(event) {
+    event.preventDefault();
     const { username } = this.state;
     const { email } = this.state;
     const { password } = this.state;
     const { confirm } = this.state;
     const weights = [];
     const { setLoginSuccess } = this.props;
-    event.preventDefault();
+    /*
+      react-router Route Component Props History 🔌
+      Allows us to redirect by accessing the history prop!
+      https://medium.com/@anneeb/redirecting-in-react-4de5e517354a
+    */
+    const { history } = this.props;
     /*
       Validate Password 🔒
     */
@@ -79,8 +85,12 @@ class Signup extends Component {
         weights
       })
         .then((response) => {
-          console.log(response);
-          if (response.status === 200) setLoginSuccess(response.data._id);
+          if (response.status === 200) {
+            setLoginSuccess(response.data);
+            history.push('/');
+          } else {
+            console.log('incorrect data');
+          }
         })
         .catch(error => console.log(error));
     } else {
@@ -133,13 +143,15 @@ class Signup extends Component {
 
 Signup.propTypes = {
   switchPortal: PropTypes.func,
-  setLoginSuccess: PropTypes.func
+  setLoginSuccess: PropTypes.func,
+  history: PropTypes.object
 };
 
 // Specifies the default values for props:
 Signup.defaultProps = {
   switchPortal: null,
-  setLoginSuccess: null
+  setLoginSuccess: null,
+  history: null
 };
 
 export default Signup;

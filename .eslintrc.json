@@ -10,6 +10,7 @@
     "comma-dangle": "off",
     "react/jsx-filename-extension": "off",
     "max-len": "off",
-    "no-underscore-dangle": "off"
+    "no-underscore-dangle": "off",
+    "react/forbid-prop-types": "on"
   }
 }

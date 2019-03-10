@@ -49,21 +49,27 @@ class Signin extends Component {
   }
 
   handleSubmit(event) {
+    event.preventDefault();
     const { email } = this.state;
     const { password } = this.state;
     const { setLoginSuccess } = this.props;
-    event.preventDefault();
+    /*
+      react-router Route Component Props History 🔌
+      Allows us to redirect by accessing the history prop!
+      https://medium.com/@anneeb/redirecting-in-react-4de5e517354a
+    */
+    const { history } = this.props;
     /*
       Make GET Request 📮
     */
     axios.post('api/users/signin', { email, password })
       .then((response) => {
-        // if (response.data.email === email && response.data.password === password) {
-        //   setLoginSuccess(response.data._id);
-        // } else {
-        //   console.log('incorrect data');
-        // }
-        console.log(response);
+        if (response.data.email === email && response.data.password === password) {
+          setLoginSuccess(response.data._id);
+          history.push('/');
+        } else {
+          console.log('incorrect data');
+        }
       })
       .catch(error => console.log(error));
   }
@@ -105,13 +111,15 @@ class Signin extends Component {
 
 Signin.propTypes = {
   switchPortal: PropTypes.func,
-  setLoginSuccess: PropTypes.func
+  setLoginSuccess: PropTypes.func,
+  history: PropTypes.object
 };
 
 // Specifies the default values for props:
 Signin.defaultProps = {
   switchPortal: null,
-  setLoginSuccess: null
+  setLoginSuccess: null,
+  history: null
 };
 
 export default Signin;

@@ -15,6 +15,7 @@
 */
 
 import React, { Component } from 'react';
+import PropTypes from 'prop-types';
 // React-Router-Dom
 // import { BrowserRouter } from 'react-router-dom';
 // My Components
@@ -30,13 +31,26 @@ class World extends Component {
   }
 
   render() {
+    const { id } = this.props;
+    const { setLoginSuccess } = this.props;
     return (
       <React.Fragment>
         <h2>Welcome to World</h2>
-        <h2>{this.props.id}</h2>
+        {id ? <h2>{id}</h2> : <p>error</p>}
       </React.Fragment>
     );
   }
 }
+
+World.propTypes = {
+  id: PropTypes.string,
+  setLoginSuccess: PropTypes.func
+};
+
+// Specifies the default values for props:
+World.defaultProps = {
+  id: '',
+  setLoginSuccess: null
+};
 
 export default World;

@@ -33,8 +33,6 @@ class Portal extends Component {
       whichPortal: true
     };
     this.switchPortal = this.switchPortal.bind(this);
-    // this.newUser = this.newUser.bind(this);
-    // this.existingUser = this.existingUser.bind(this);
   }
 
   // Toggle between forms
@@ -54,7 +52,7 @@ class Portal extends Component {
             <span role="img" aria-label="Portal">Hello Portal Page! 🌀</span>
           </Cell>
         </Row>
-        { whichPortal ? <Signup switchPortal={this.switchPortal} setLoginSuccess={setLoginSuccess} /> : <Signin switchPortal={this.switchPortal} setLoginSuccess={setLoginSuccess} /> }
+        { whichPortal ? <Signup {...this.props} switchPortal={this.switchPortal} setLoginSuccess={setLoginSuccess} /> : <Signin {...this.props} switchPortal={this.switchPortal} setLoginSuccess={setLoginSuccess} /> }
       </Grid>
     );
   }
