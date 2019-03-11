@@ -30,10 +30,11 @@ class App extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      loginSuccess: false,
-      id: ''
+      loginSuccess: true,
+      id: '5c7fd563b05762479c1da64f'
     };
     this.setLoginSuccess = this.setLoginSuccess.bind(this);
+    this.logout = this.logout.bind(this);
   }
 
   setLoginSuccess(token) {
@@ -41,8 +42,13 @@ class App extends Component {
       loginSuccess: !prevState.loginSuccess,
       id: token
     }));
-    console.log(token);
-    console.log(this.state.loginSuccess);
+  }
+
+  logout() {
+    this.setState(prevState => ({
+      loginSuccess: !prevState.loginSuccess,
+      id: ''
+    }));
   }
 
   render() {
@@ -59,7 +65,7 @@ class App extends Component {
               !loginSuccess ? (
                 <Redirect to="/portal" />
               ) : (
-                <World loginSuccess={loginSuccess} setLoginSuccess={this.setLoginSuccess} id={id} />
+                <World loginSuccess={loginSuccess} setLoginSuccess={this.setLoginSuccess} id={id} logout={this.logout} />
               )
             )}
           />
