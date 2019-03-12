@@ -13,16 +13,19 @@
 
 import React, { Component } from 'react';
 import * as THREE from 'three';
-import SubdivisionModifier from './algorithm/loop';
 import { saveAs } from 'file-saver';
+import SubdivisionModifier from '../algorithm/loop';
+
 const exportSTL = require('threejs-export-stl');
 // import * as OrbitControls from 'three-orbit-controls'; // Research later, no time
 const OrbitControls = require('three-orbit-controls')(THREE);
 
 // ------------------------------------------------- //
 
-let scene, camera, renderer, controls;
-let shape, smooth, geometry;
+let scene; let camera; let renderer; let
+  controls;
+let shape; let smooth; let
+  geometry;
 
 class Scene extends Component {
   constructor(props) {
@@ -31,9 +34,9 @@ class Scene extends Component {
     this.getGeometry = this.getGeometry.bind(this);
     this.generateSubdivision = this.generateSubdivision.bind(this);
   }
+
   // If mounted successfully
   componentDidMount() { // Runtime
-
     // const width = this.mount.clientWidth;
     // const height = this.mount.clientHeight; // Kinda Bugy
     const width = window.innerWidth;
@@ -41,8 +44,8 @@ class Scene extends Component {
 
     scene = new THREE.Scene();
     scene.background = new THREE.Color(0xffde03);
-		// scene.fog = new THREE.FogExp2(0xffde03, 0.1);
-		// scene.fog = new THREE.Fog(scene.background,1,5000);
+    // scene.fog = new THREE.FogExp2(0xffde03, 0.1);
+    // scene.fog = new THREE.Fog(scene.background,1,5000);
 
     // THREE.CameraType(FOV,aspectRatio,nearClipPlane,farClipPlane);
     camera = new THREE.PerspectiveCamera(75, width / height, 1, 1000);
@@ -57,7 +60,7 @@ class Scene extends Component {
   	hemisphereLight.position.set(0, 100, 0);
   	scene.add(hemisphereLight);
     const hemiLightHelper = new THREE.HemisphereLightHelper(hemisphereLight, 10);
-		scene.add(hemiLightHelper);
+    scene.add(hemiLightHelper);
 
     // Create a DirectionalLight and turn on shadows for the light
     const directionalLight = new THREE.DirectionalLight(0xffffff, 0.4);
@@ -74,19 +77,19 @@ class Scene extends Component {
     directionalLight.shadow.camera.far = 500;
 
     const dirLightHeper = new THREE.DirectionalLightHelper(directionalLight, 10);
-		scene.add(dirLightHeper);
+    scene.add(dirLightHeper);
 
     /*
     Create Geometry here
     */
-    const plane = this.getPlane(1000,1000);
+    const plane = this.getPlane(1000, 1000);
     scene.add(plane);
     geometry = this.getGeometry(1);
     shape = this.generateSubdivision(geometry); // This will be our subdivide geometry call
     scene.add(shape);
 
     // Magic - Create our WebGL render instance.
-    renderer = new THREE.WebGLRenderer({antialias:true});
+    renderer = new THREE.WebGLRenderer({ antialias: true });
     renderer.setSize(width, height);
     renderer.shadowMap.enabled = true;
     renderer.shadowMap.type = THREE.PCFSoftShadowMap;
@@ -130,7 +133,7 @@ class Scene extends Component {
       //
       geometry = this.getGeometry(1);
       shape = this.generateSubdivision(geometry);
-      shape.material.wireframe = this.props.wireframe
+      shape.material.wireframe = this.props.wireframe;
       scene.add(shape);
     }
     if (this.props.exportClicked !== prevProps.exportClicked) {
@@ -152,7 +155,7 @@ class Scene extends Component {
   }
 
   componentWillUnmount() {
-    window.removeEventListener('resize');
+    // window.removeEventListener('resize');
     this.stop();
     this.mount.removeChild(this.renderer.domElement);
   }
@@ -175,7 +178,7 @@ class Scene extends Component {
     this.renderer.render(
       this.scene,
       this.camera
-    )
+    );
 
     this.controls.update();
 
@@ -200,7 +203,7 @@ class Scene extends Component {
   }
 
   // Create a geometry for use in creating a mesh
-  getGeometry = (w,h) => {
+  getGeometry = (w, h) => {
     let geometry;
     switch (this.props.geometry) {
       case 'Cone':
@@ -234,11 +237,11 @@ class Scene extends Component {
   }
 
   // Create a plane that receives shadows (but does not cast them)
-  getPlane = (w,h) => {
-    const geometry = new THREE.PlaneBufferGeometry(w,h);
-  	const material = new THREE.MeshPhongMaterial({side:THREE.DoubleSide});
+  getPlane = (w, h) => {
+    const geometry = new THREE.PlaneBufferGeometry(w, h);
+  	const material = new THREE.MeshPhongMaterial({ side: THREE.DoubleSide });
     material.color.setHex(0xffde03);
-  	const mesh = new THREE.Mesh(geometry,material);
+  	const mesh = new THREE.Mesh(geometry, material);
     mesh.rotation.x = -1.5708;
     mesh.position.y = -2;
     mesh.receiveShadow = true;
@@ -250,17 +253,17 @@ class Scene extends Component {
     // Invoke modifier
     const modifier = new SubdivisionModifier(
       this.props.subdivisions,
-      this.props.adjacent_weight,
-      this.props.edge_point_weight,
-      this.props.connecting_edges_weight
+      this.props.adjacentWeight,
+      this.props.edgePointWeight,
+      this.props.connectingEdgesWeight
     );
     // Create material
-    const material = new THREE.MeshPhongMaterial({wireframe: this.props.wireframe});
+    const material = new THREE.MeshPhongMaterial({ wireframe: this.props.wireframe });
     material.color.setHex(0xff0266);
     // Scaling
     const params = geometry.parameters;
-    if ( params.scale ) {
-      geometry.scale( params.scale, params.scale, params.scale );
+    if (params.scale) {
+      geometry.scale(params.scale, params.scale, params.scale);
     }
     // Smoothing
     smooth = modifier.modify(geometry);
@@ -277,7 +280,7 @@ class Scene extends Component {
     //
     const mesh = new THREE.Mesh(smooth, material);
     mesh.scale.setScalar(params.meshScale ? params.meshScale : 1);
-    mesh.name = `${this.props.geometry}`
+    mesh.name = `${this.props.geometry}`;
     mesh.castShadow = true;
     mesh.receiveShadow = false;
     return mesh;
@@ -295,11 +298,11 @@ class Scene extends Component {
     return (
       <main
         className="canvas"
-        ref={mount => {
-          this.mount = mount
+        ref={(mount) => {
+          this.mount = mount;
         }}
       />
-    )
+    );
   }
 }
 

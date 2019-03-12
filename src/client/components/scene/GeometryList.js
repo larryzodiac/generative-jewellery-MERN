@@ -11,7 +11,7 @@ import Checkbox from '@material/react-checkbox';
 // ------------------------------------------------- //
 
 // My components
-import Radio from './input/Radio_';
+import Radio from '../input/Radio_';
 
 // ------------------------------------------------- //
 

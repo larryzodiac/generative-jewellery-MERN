@@ -19,7 +19,7 @@ import React, { Component } from 'react';
 import { BrowserRouter, Route, Redirect } from 'react-router-dom';
 // My Components
 import Portal from './components/portal/Portal';
-import World from './components/World';
+import World from './components/world/World';
 import './App.scss';
 
 /*
@@ -31,6 +31,7 @@ class App extends Component {
     super(props);
     this.state = {
       loginSuccess: true,
+      // id: ''
       id: '5c7fd563b05762479c1da64f'
     };
     this.setLoginSuccess = this.setLoginSuccess.bind(this);
