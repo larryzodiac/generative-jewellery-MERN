@@ -6,7 +6,7 @@ const autoprefixer = require('autoprefixer');
 const outputDirectory = 'dist';
 
 module.exports = {
-  entry: ['./src/client/App.scss', './src/client/index.js'],
+  entry: ['babel-polyfill', './src/client/index.js'],
   output: {
     path: path.join(__dirname, outputDirectory),
     filename: 'bundle.js'
