@@ -52,6 +52,12 @@ class Portal extends Component {
             <span role="img" aria-label="Portal">Hello Portal Page! 🌀</span>
           </Cell>
         </Row>
+        <Row>
+          <Cell columns={12}>
+            <p>Note these forms do not have visual validation.</p>
+            <p>Name and email may be any string, passwords must match.</p>
+          </Cell>
+        </Row>
         { whichPortal ? <Signup {...this.props} switchPortal={this.switchPortal} setLoginSuccess={setLoginSuccess} /> : <Signin {...this.props} switchPortal={this.switchPortal} setLoginSuccess={setLoginSuccess} /> }
       </Grid>
     );

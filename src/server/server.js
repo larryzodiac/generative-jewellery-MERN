@@ -50,7 +50,7 @@ const { MongoClient } = require('mongodb');
 const { ObjectID } = require('mongodb');
 const bodyParser = require('body-parser');
 const express = require('express');
-const session = require('express-session')
+const session = require('express-session');
 
 const server = express();
 server.use(express.static('dist'));
@@ -88,9 +88,9 @@ server.use(session({
 server.post('/api/users/signup', (req, res) => {
   req.body._id = new ObjectID();
   const document = req.body;
-  db.collection('users').insertOne(document, (err, result) => {
+  db.collection('users').insertOne(document, (err) => {
     if (err) throw err;
-    req.session.id = document._id;
+    req.session.userId = document._id;
     res.send(document._id);
   });
 });
@@ -102,10 +102,25 @@ server.post('/api/users/signin', (req, res) => {
   db.collection('users').findOne({ email: req.body.email }, (err, result) => {
     if (err) throw err;
     if (result.email === req.body.email && result.password === req.body.password) {
-      req.session.id = result._id;
+      req.session.userId = result._id;
       res.send(result);
     }
   });
+});
+
+/*
+  Check for Session
+  Unsure if this is the correct way to utilise express-sessions
+  Maybe use JSON Web Tokens?
+  STUCK
+*/
+server.get('/api/users/session', (req, res) => {
+  console.log(req.session.userId);
+  res.send(req.session.userId);
+  // db.collection('users').findOne({ _id: new ObjectID(req.params.id) }, (err, result) => {
+  //   if (err) throw err;
+  //   res.send(result);
+  // });
 });
 
 // ------------------------------------------------- //
@@ -124,7 +139,8 @@ server.get('/api/users/:id', (req, res) => {
 // ------------------------------------------------- //
 
 /*
-  Signin.js ~ Read a user's email + password (check login match)
+  World.js ~ update
+  CRUD operations for user weights
 */
 server.put('/api/users/save', (req) => {
   const { weightId } = req.body;
@@ -161,28 +177,13 @@ server.put('/api/users/save', (req) => {
       }
     );
   }
-  console.log('done');
 });
 
-// ------------------------------------------------- //
-
 /*
-  Delete
+  World.js ~ delete
 */
 server.put('/api/users/delete/:id', (req, res) => {
   const { id } = req.params;
-  // console.log(id);
-  // db.collection('users').deleteOne({ _id: new ObjectID(req.params.id) }, (err) => {
-  //   if (err) return res.send(err);
-  //   console.log('deleted from database');
-  //   return res.send({ success: true });
-  // });
-  // db.collection('users').updateOne(
-  //   // {'content.assets._id': ObjectId('4fc63def5b20fb722900010e')},
-  //   { 'weights.weight_id': new ObjectID(id) },
-  //   { $pull: { weights: { weight_id: new ObjectID(id) } } }
-  // );
-
   db.collection('users').updateOne(
     { 'weights.weight_id': new ObjectID(id) },
     { $pull: { weights: { weight_id: new ObjectID(id) } } },
@@ -192,5 +193,3 @@ server.put('/api/users/delete/:id', (req, res) => {
     }
   );
 });
-
-// ------------------------------------------------- //

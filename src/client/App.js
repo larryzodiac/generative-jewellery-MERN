@@ -15,6 +15,7 @@
 */
 
 import React, { Component } from 'react';
+import axios from 'axios';
 // React-Router-Dom
 import { BrowserRouter, Route, Redirect } from 'react-router-dom';
 // My Components
@@ -30,12 +31,24 @@ class App extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      loginSuccess: true,
-      // id: ''
-      id: '5c7aa39d7ce8432c1884a1e4'
+      loginSuccess: false,
+      id: ''
+      // loginSuccess: true,
+      // id: '5c7aa39d7ce8432c1884a1e4'
     };
     this.setLoginSuccess = this.setLoginSuccess.bind(this);
     this.logout = this.logout.bind(this);
+  }
+
+  componentDidMount() {
+    axios.get('api/users/session')
+      .then((response) => {
+        console.log(response);
+        // if respones.data set id + loginSuccess?
+        // Maybe use JWT?
+        // this.setState({ weights: response.data.weights });
+      })
+      .catch(error => console.log(error));
   }
 
   setLoginSuccess(token) {
