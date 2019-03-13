@@ -47,6 +47,7 @@
 @import './style-overrides/react-radio-overrides';
 // Card
 @import '@material/react-card/index.scss';
+@import './style-overrides/react-card-overrides';
 // Text field
 @import '@material/react-text-field/index.scss';
 // Drawer
@@ -87,6 +88,15 @@
 
 .mdc-drawer--dismissible {
   top: auto;
+}
+
+.mdc-layout-grid {
+  margin: 0px 0px 0px 0px !important;
+  width: 100%;
+}
+
+.mdc-card {
+  border-radius: 20px 0px 0px 0px;
 }
 
 // Material-UI framework not MDC -> Slider

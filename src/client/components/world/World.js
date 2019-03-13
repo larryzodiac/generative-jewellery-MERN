@@ -16,6 +16,7 @@
 
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
+import axios from 'axios';
 // Material Design Components
 import { TopAppBarFixedAdjust } from '@material/react-top-app-bar';
 // My Components
@@ -35,6 +36,7 @@ class World extends Component {
       tabIndex: 0,
       navigationIcon: true,
       // For the Scene
+      weightId: '',
       geometry: 'Cube',
       wireframe: false,
       subdivisions: 0,
@@ -46,6 +48,9 @@ class World extends Component {
     this.toggleTab = this.toggleTab.bind(this);
     this.handleChange = this.handleChange.bind(this);
     this.loadWeights = this.loadWeights.bind(this);
+    this.saveWeights = this.saveWeights.bind(this);
+    this.handleDelete = this.handleDelete.bind(this);
+    this.clear = this.clear.bind(this);
   }
 
   toggleDrawer() {
@@ -74,8 +79,56 @@ class World extends Component {
     }
   }
 
-  loadWeights() {
-    // Load entry into state then scene
+  loadWeights(data) {
+    this.setState({
+      drawerOpen: true,
+      tabIndex: 0,
+      navigationIcon: true,
+      // For the Scene
+      weightId: data.weightId,
+      geometry: data.geometry,
+      wireframe: false,
+      subdivisions: data.subdivisions,
+      adjacentWeight: data.adjacentWeight,
+      edgePointWeight: data.edgePointWeight,
+      connectingEdgesWeight: data.connectingEdgesWeight
+    });
+  }
+
+  saveWeights() {
+    const { id } = this.props;
+    const { weightId } = this.state;
+    const { geometry } = this.state;
+    const { subdivisions } = this.state;
+    const { adjacentWeight } = this.state;
+    const { edgePointWeight } = this.state;
+    const { connectingEdgesWeight } = this.state;
+    axios.put('api/users/save', {
+      id,
+      weightId,
+      geometry,
+      subdivisions,
+      adjacentWeight,
+      edgePointWeight,
+      connectingEdgesWeight
+    });
+  }
+
+  handleDelete() {
+    console.log('wowo');
+    this.setState({ weightId: '' });
+  }
+
+  clear() {
+    this.setState({
+      weightId: '',
+      geometry: 'Cube',
+      wireframe: false,
+      subdivisions: 0,
+      adjacentWeight: 0.125,
+      edgePointWeight: 0.375,
+      connectingEdgesWeight: 5
+    });
   }
 
   render() {
@@ -92,7 +145,6 @@ class World extends Component {
     const { connectingEdgesWeight } = this.state;
     // Props
     const { id } = this.props;
-    const { setLoginSuccess } = this.props;
     const { logout } = this.props;
     return (
       <div className="drawer-container">
@@ -110,6 +162,8 @@ class World extends Component {
             <Playground
               drawerOpen={drawerOpen}
               handleChange={this.handleChange}
+              saveWeights={this.saveWeights}
+              clear={this.clear}
               geometry={geometry}
               wireframe={wireframe}
               subdivisions={subdivisions}
@@ -118,7 +172,11 @@ class World extends Component {
               connectingEdgesWeight={connectingEdgesWeight}
             />
           ) : (
-            <Saves loadWeights={this.loadWeights} />
+            <Saves
+              id={id}
+              loadWeights={this.loadWeights}
+              handleDelete={this.handleDelete}
+            />
           )}
         </TopAppBarFixedAdjust>
       </div>
@@ -128,7 +186,6 @@ class World extends Component {
 
 World.propTypes = {
   id: PropTypes.string,
-  setLoginSuccess: PropTypes.func.isRequired,
   logout: PropTypes.func.isRequired
 };
 

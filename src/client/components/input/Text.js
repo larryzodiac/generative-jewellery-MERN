@@ -1,7 +1,7 @@
 /*
   Evan MacHale - N00150552
   05.03.19
-  TextField_.js
+  Text.js
 */
 
 import React from 'react';

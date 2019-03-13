@@ -77,7 +77,7 @@ class Signup extends Component {
       Make POST Request 📮
     */
     if (passwordValid) {
-      axios.post('api/users', {
+      axios.post('api/users/signup', {
         _id: '',
         username,
         email,

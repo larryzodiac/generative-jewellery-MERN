@@ -85,7 +85,7 @@ server.use(session({
 /*
   Signup.js ~ Create
 */
-server.post('/api/users', (req, res) => {
+server.post('/api/users/signup', (req, res) => {
   req.body._id = new ObjectID();
   const document = req.body;
   db.collection('users').insertOne(document, (err, result) => {
@@ -98,7 +98,6 @@ server.post('/api/users', (req, res) => {
 /*
   Signin.js ~ Read a user's email + password (check login match)
 */
-// Route parametres example
 server.post('/api/users/signin', (req, res) => {
   db.collection('users').findOne({ email: req.body.email }, (err, result) => {
     if (err) throw err;
@@ -112,22 +111,57 @@ server.post('/api/users/signin', (req, res) => {
 // ------------------------------------------------- //
 
 /*
-  World.js ~ Read a user's id (double check token match)
+  Saves.js ~ Read a user's id (Send back Weights)
 */
-// server.get('/api/users/:id', (req, res) => {
-//   db.collection('users').findOne({ _id: new ObjectID(req.params.id) }, (err, result) => {
-//     if (err) throw err;
-//     res.send(result);
-//   });
-// });
+// Route parametres example
+server.get('/api/users/:id', (req, res) => {
+  db.collection('users').findOne({ _id: new ObjectID(req.params.id) }, (err, result) => {
+    if (err) throw err;
+    res.send(result);
+  });
+});
 
 // ------------------------------------------------- //
 
 /*
-  Update
+  Signin.js ~ Read a user's email + password (check login match)
 */
-server.put('/api/users/update', (req, res) => {
-  res.send('Got a PUT request at /user');
+server.put('/api/users/save', (req) => {
+  const { weightId } = req.body;
+  if (weightId === '') {
+    db.collection('users').updateOne(
+      { _id: new ObjectID(req.body.id) },
+      {
+        $push: {
+          weights: {
+            weight_id: new ObjectID(),
+            name: req.body.geometry,
+            geometry: req.body.geometry,
+            subdivisions: req.body.subdivisions,
+            adjacentWeight: req.body.adjacentWeight,
+            edgePointWeight: req.body.edgePointWeight,
+            connectingEdgesWeight: req.body.connectingEdgesWeight
+          }
+        }
+      }
+    );
+  } else {
+    // https://dba.stackexchange.com/questions/157149/how-can-i-update-a-single-field-in-an-array-of-embedded-documents
+    db.collection('users').updateOne(
+      { 'weights.weight_id': new ObjectID(weightId) },
+      {
+        $set: {
+          'weights.$.name': req.body.geometry,
+          'weights.$.geometry': req.body.geometry,
+          'weights.$.subdivisions': req.body.subdivisions,
+          'weights.$.adjacentWeight': req.body.adjacentWeight,
+          'weights.$.edgePointWeight': req.body.edgePointWeight,
+          'weights.$.connectingEdgesWeight': req.body.connectingEdgesWeight
+        }
+      }
+    );
+  }
+  console.log('done');
 });
 
 // ------------------------------------------------- //
@@ -135,8 +169,28 @@ server.put('/api/users/update', (req, res) => {
 /*
   Delete
 */
-server.delete('/api/users/update', (req, res) => {
-  res.send('Got a DELETE request at /user');
+server.put('/api/users/delete/:id', (req, res) => {
+  const { id } = req.params;
+  // console.log(id);
+  // db.collection('users').deleteOne({ _id: new ObjectID(req.params.id) }, (err) => {
+  //   if (err) return res.send(err);
+  //   console.log('deleted from database');
+  //   return res.send({ success: true });
+  // });
+  // db.collection('users').updateOne(
+  //   // {'content.assets._id': ObjectId('4fc63def5b20fb722900010e')},
+  //   { 'weights.weight_id': new ObjectID(id) },
+  //   { $pull: { weights: { weight_id: new ObjectID(id) } } }
+  // );
+
+  db.collection('users').updateOne(
+    { 'weights.weight_id': new ObjectID(id) },
+    { $pull: { weights: { weight_id: new ObjectID(id) } } },
+    (err, result) => {
+      if (err) throw err;
+      res.send(result);
+    }
+  );
 });
 
 // ------------------------------------------------- //

@@ -53,6 +53,8 @@ class Playground extends Component {
     const { exportClicked } = this.state;
     const { drawerOpen } = this.props;
     const { handleChange } = this.props;
+    const { saveWeights } = this.props;
+    const { clear } = this.props;
     const { geometry } = this.props;
     const { wireframe } = this.props;
     const { subdivisions } = this.props;
@@ -96,6 +98,24 @@ class Playground extends Component {
                     Download .stl
                   </Button>
                 </ListItem>
+                <ListItem className="drawer-list-item">
+                  <Button
+                    className="button-alternate"
+                    outlined
+                    onClick={saveWeights}
+                  >
+                    Save
+                  </Button>
+                </ListItem>
+                <ListItem className="drawer-list-item">
+                  <Button
+                    className="button-alternate"
+                    outlined
+                    onClick={clear}
+                  >
+                    New
+                  </Button>
+                </ListItem>
               </List>
             </ListGroup>
           </DrawerContent>
@@ -119,6 +139,8 @@ class Playground extends Component {
 Playground.propTypes = {
   drawerOpen: PropTypes.bool.isRequired,
   handleChange: PropTypes.func.isRequired,
+  saveWeights: PropTypes.func.isRequired,
+  clear: PropTypes.func.isRequired,
   geometry: PropTypes.string.isRequired,
   wireframe: PropTypes.bool.isRequired,
   subdivisions: PropTypes.number.isRequired,
