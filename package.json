@@ -3,7 +3,7 @@
   "version": "1.0.0",
   "description": "",
   "main": "src/server/server.js",
-  "homepage": "https://larryzodiac.github.io/generative-jewellery-mern",
+  "homepage": "https://larryzodiac.github.io/generative-jewellery-MERN/",
   "scripts": {
     "build": "webpack --mode production",
     "start": "npm run build && node src/server/server.js",
